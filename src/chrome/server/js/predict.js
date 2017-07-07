@@ -23,8 +23,8 @@ var Predictor = (function() {
   //        t might not be normalized to start at 0!
   //        action is "m", "d", or "u"
   //
-  // @return a Distribution object whose predictions are arrays of 
-  //            
+  // @return a Distribution object whose predictions are arrays of
+  //
   //            [x position, y position, action]
   //
   //         where action is "m", "d", or "u"
@@ -45,6 +45,7 @@ var BaselinePredictor = (function(Predictor) {
   // @boxes List of bounding boxes for the clickable elements on the page
   // @templates list of precomputed KTM templates (default is loaded from /static/data/ktmdata.json)
   function BaselinePredictor(boxes, templates) {
+    //console.log("init here", templates);
     this.ktm = new ktmPred.KTM(templates);
     this.defaultPrediction = Dist.NaiveDistribution.from([0,0,'m'], mouseToKey);
     Predictor.apply(this, arguments);
@@ -52,7 +53,7 @@ var BaselinePredictor = (function(Predictor) {
 
   BaselinePredictor.prototype.predict = function(trace, deltaTime) {
     var pt = null;
-    if (trace.length <= 2) { 
+    if (trace.length <= 2) {
       if (trace.length == 0) return this.defaultPrediction;
       pt = trace[trace.length - 1];
     } else {
@@ -65,7 +66,7 @@ var BaselinePredictor = (function(Predictor) {
     dist.set(pred, 1);
     return dist;
   };
-
+  console.log("ret here");
   return BaselinePredictor;
 })(Predictor);
 
@@ -78,7 +79,7 @@ var YourPredictor = (function(Predictor) {
   function YourPredictor(boxes) {
     Predictor.apply(this, arguments);
   };
-  
+
 
   // TODO: fill in with your code
 
