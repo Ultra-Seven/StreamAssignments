@@ -326,7 +326,10 @@ class ProgressiveDataStruct(Precompute):
     s.name.extend(schema)
     table = Table(schema=s)
     cnt = 0
-    for col in zip(*rows):
+    temp_tuple = rows
+    temp_tuple.sort(key = lambda t: t[1]);
+    #print "temp", temp_tuple
+    for col in zip(*temp_tuple):
       if cnt == 0:
         for el in col:
           data.append(el)
@@ -342,8 +345,21 @@ class ProgressiveDataStruct(Precompute):
     encodedRows = zip(data, index)
     #print "tuple:", encodedRows
 
+    # get data & index lists which have no 0 element 
+    dataNot0 = []
+    indexNot0 = []
+    length = len(data)
+    for x in xrange(0,length):
+      if data[x] != 0:
+        dataNot0.append(data[x])
+        indexNot0.append(index[x])
+    dataNot0.append(length)
+    indexNot0.append(-1)
+    encodedRowsNot0 = zip(dataNot0, indexNot0)
 
-    table.cols.extend(Table.Col(val=col) for col in zip(*encodedRows))
+    #print encodedRowsNot0, len(encodedRowsNot0)
+
+    table.cols.extend(Table.Col(val=col) for col in zip(*encodedRowsNot0))
     return table.SerializeToString()
 
   @staticmethod

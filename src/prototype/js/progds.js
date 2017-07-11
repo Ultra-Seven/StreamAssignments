@@ -45,12 +45,16 @@ var ProgressiveDataStructure = (function(GarbageCollectingDataStructure) {
     14, 17, 22, 29, 51, 87, 80, 62, 18, 22, 37, 56, 68, 109, 103, 77, 24, 35, 55, 64, 81, 104, 113, 92,
     49, 64, 78, 87, 103, 121, 120, 101, 72, 92, 95, 98, 112, 100, 103, 99];
     var deBytes = this.decoder.decode(bytes)
-    //console.log("first decode:", deBytes);
-    var tempBytes = [];
-    for (var i = 0; i < deBytes.length; i++) {
-      tempBytes.push(deBytes[i].y);
+    const last = deBytes.length - 1;
+    var length = (deBytes[last].x == -1) ? deBytes[last].y : 0;
+    var tempBytes = new Array(length + 1).join('0').split('').map(parseFloat);
+    for (let i = 0; i < last; i++) {
+      tempBytes[deBytes[i].x] = deBytes[i].y;
       //console.log(deBytes[i].x, deBytes[i].y);
     }
+    // console.log("tempBytes:", tempBytes);
+   
+    //decode data using DCT
     for(let index in tempBytes) {
         tempBytes[index] = Math.floor(tempBytes[index] * quantization[index]);
     }
@@ -63,13 +67,14 @@ var ProgressiveDataStructure = (function(GarbageCollectingDataStructure) {
         }
         c = c + 0.5 * tempBytes[0];
         c = Math.floor(c * 2.0 / N);
-        decoded_list.push(Math.floor(c));
+        //decoded_list.push(Math.floor(c));
+        decoded_list.push({
+          x: index,
+          y: Math.floor(c)
+        });
     }
-    for (var i = 0; i < deBytes.length; i++) {
-      deBytes[i].y = decoded_list[i];
-    }
-    //console.log("decoder:", decoder);
-    return deBytes;
+    // console.log("decoded_list:", decoded_list);
+    return decoded_list;
   
   };
 
