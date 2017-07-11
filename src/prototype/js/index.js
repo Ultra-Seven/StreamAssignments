@@ -50,6 +50,7 @@ engine.registerQueryTemplate(q3);
 function setupViz(qtemplate, opts) {
   var viz = new Viz.Viz(engine, qtemplate, opts).setup();
   engine.registerViz(viz);
+  //@template,data
   var q = new Query.Query(qtemplate, {});
   engine.registerQuery(q, viz.render.bind(viz));
   return viz;
@@ -116,18 +117,21 @@ var makeViz3 = function(cb) {
 
 // link the vizes
 async.parallel([makeViz1, makeViz2,  makeViz3], function(err, vizes) {
+  //console.log("vizes:", vizes);
   _.each(vizes, function(v1, i1) {
     v1.on("mouseover", function(viz, el, row) {
       // create the parameter data for the query
       var attr = v1.qtemplate.select['x']
       var data = { };
       data[attr] = row['x'];
-
+      //console.log("data", data, "element:", el, "row:", row, "viz:", viz);
       _.each(vizes, function(v2, i2) {
         if (i1 == i2) return;
         var q = new Query.Query(v2.qtemplate, data);
+        //console.log("query:", q);
         engine.registerQuery(q, v2.render.bind(v2));
       });
+      //traversalUsingTraversalAPI(document.documentElement);
     });
   });
 })

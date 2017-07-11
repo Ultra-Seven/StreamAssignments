@@ -72,14 +72,14 @@ def setup_spec(db, spec):
       param_vals[expr] = list(vals)
 
     # setup the data struture
-    ds = GBDataStruct(db, spec)
-    ds.setup_cache(param_vals)
+    #ds = GBDataStruct(db, spec)
+    #ds.setup_cache(param_vals)
 
 
 
     # TODO: setup your incrementally encoded data structure
     ds2 = ProgressiveDataStruct(db, spec)
-    ds.setup_cache(param_vals)
+    ds2.setup_cache(param_vals)
 
 
 

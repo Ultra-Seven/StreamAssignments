@@ -27,6 +27,7 @@ var Viz = (function(EventEmitter) {
 
     this.qtemplate = qtemplate;
     this.engine = engine;
+    //console.log("what is d3", d3);
     return this;
   };
 

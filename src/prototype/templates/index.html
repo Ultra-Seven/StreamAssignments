@@ -17,5 +17,43 @@
   </div>
     
 </body>
+<script type="text/javascript" src="/static/js/sylvester.js"></script>
+<script>
+  var decay = 0.003; 
+  var interactableDOMs = [];
+  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
+  //var target = document.querySelector('#some-id');
+  var observer = new MutationObserver(function(mutations) {
+    //console.log("mutation:", mutations);
+    mutations.forEach(function(mutation) {
+      var node = mutation.target;
+      //console.log("node change:", node.nodeName);
+      if(node.nodeName === "g") {
+        traversalUsingTraversalAPI(node);
+      }
+    });
+  });
+  observer.observe(document, {childList:true,subtree:true});
+  function traversalUsingTraversalAPI(node){
+    if(node && node.nodeType === 1 && node.nodeName === "rect" && !node.hasChildNodes()){
+      var x = document.getElementsByClassName('mark');
+      if (x.length != interactableDOMs.length) {
+        interactableDOMs = x;
+        //console.log("[0] data:", d3.select(interactableDOMs[0]).data())
+        // var jelm = $(interactableDOMs[0]);
+        // var svg = jelm.parent().parent().parent()[0].id;
+        //console.log("parent:", svg);
+      }
+      return;
+      //interactableDOMs.push(node);
+      //console.log(node);
+    }
+    var i = 0,len = node.childElementCount, child = node.firstElementChild;
+    for(; i < len ; i++){
+      traversalUsingTraversalAPI(child);
+      child = child.nextElementSibling;
+    }
+  }
+</script>
 <script type="text/javascript" src="/static/js/index.js"></script>
 </html>

@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.sql.elements import TextClause
 from table_pb2 import *
 from itertools import product, chain, combinations
+from dct import *
 
 
 def powerset(iterable):
@@ -32,6 +33,10 @@ def encode_table(schema, rows):
   s = Table.Schema()
   s.name.extend(schema)
   table = Table(schema=s)
+  # for col in zip(*rows):
+  #   # print "col:", col, len(col)
+  #   for el in col:
+  #     print el
   table.cols.extend(Table.Col(val=col) for col in zip(*rows))
   return table.SerializeToString()
 
@@ -309,7 +314,37 @@ class ProgressiveDataStruct(Precompute):
     There are examples above
     """
     # TODO: implement me
-    raise Exception("Implement Me!")
+    #raise Exception("Implement Me!")
+    """
+    assume everything is uints
+    @schema list of attr names
+    @rows 
+    """
+    data = []
+    index = []
+    s = Table.Schema()
+    s.name.extend(schema)
+    table = Table(schema=s)
+    cnt = 0
+    for col in zip(*rows):
+      if cnt == 0:
+        for el in col:
+          data.append(el)
+        #print "list:", data
+        # DCT
+        dct = DCT(data)
+        encode = dct.encodeDct2(False)
+        dct.quantize(encode)
+        data = encode
+      else:
+        index = list(col)
+      cnt = cnt + 1
+    encodedRows = zip(data, index)
+    #print "tuple:", data, index, encodedRow
+
+
+    table.cols.extend(Table.Col(val=col) for col in zip(*encodedRows))
+    return table.SerializeToString()
 
   @staticmethod
   def can_answer(query_template):
