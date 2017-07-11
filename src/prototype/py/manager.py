@@ -38,8 +38,9 @@ class Manager(object):
         continue
       if self.prev_dist_update_time == flask.dist_update_time:
         continue
-
+      #print "flask dist", flask.dist
       (query, prob) = tuple(max(flask.dist, key=lambda pair: pair[1]))
+      #print "query prob", query, prob
       self.prev_dist_update_time = flask.dist_update_time
       if prob == 0: 
         continue
@@ -86,6 +87,7 @@ class Manager(object):
     mincost, best_ds = min(costs)
     # TODO: you probably will want to change the signature of get_iter() in order to control 
     #       partial results.
+    #print args
     return best_ds, best_ds.get_iter(args)
 
 

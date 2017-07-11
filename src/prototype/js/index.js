@@ -8,7 +8,6 @@ var Viz = require("./viz");
 
 Util.DEBUG = false;
 
-
 var bytespermb = 1048576;
 var engine = window.engine = new Engine(450); // replace 450 with bytespermb * #MBs
 
@@ -19,10 +18,9 @@ var gbDS = new GBDataStructure();
 var progDS = new ProgressiveDataStructure();
 
 // TODO: comment next line to use the ProgressiveDataStructure to answer queries
-engine.registerDataStruct(gbDS);
-
+//engine.registerDataStruct(gbDS);
 // TODO: uncomment the next line to enable ProgressiveDataStructures
-// engine.registerDataStruct(progDS);
+engine.registerDataStruct(progDS);
 
 
 var q1 = window.q1 = new Query.GBQueryTemplate(
@@ -43,6 +41,7 @@ var q3 = window.q3 = new Query.GBQueryTemplate(
     [ "c"],
     { "a": "num", "b": "num"}
 );
+console.log("registerQueryTemplate");
 engine.registerQueryTemplate(q1);
 engine.registerQueryTemplate(q2);
 engine.registerQueryTemplate(q3);
@@ -63,7 +62,6 @@ var makeViz1 = function(cb) {
       d: "continuous" 
     }
   };
-
   Util.getAttrStats(data,
     function(data) {
       var opts = {
@@ -146,6 +144,7 @@ async.parallel([makeViz1, makeViz2,  makeViz3], function(err, vizes) {
 Util.stream_from("/data", function(arr) {
   if (Util.DEBUG)
     Util.Debug.update(arr);
+  console.log("data from server:", arr);
   engine.ringbuf.write(arr);
 }, Util.Debug.debug.bind(Util.Debug));
 

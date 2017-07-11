@@ -101,6 +101,7 @@ def dist_set():
   The corresponding client files are in js/dist.js
   """
   flask.dist = json.loads(request.data)
+  #print "flask dist:", flask.dist
   flask.dist_update_time = time.time()
   if flask.DEBUG:
     print "got query distribution"

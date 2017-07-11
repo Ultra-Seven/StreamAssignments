@@ -333,14 +333,14 @@ class ProgressiveDataStruct(Precompute):
         #print "list:", data
         # DCT
         dct = DCT(data)
-        encode = dct.encodeDct2(False)
+        encode = dct.encodeDct2()
         dct.quantize(encode)
         data = encode
       else:
         index = list(col)
       cnt = cnt + 1
     encodedRows = zip(data, index)
-    #print "tuple:", data, index, encodedRow
+    #print "tuple:", encodedRows
 
 
     table.cols.extend(Table.Col(val=col) for col in zip(*encodedRows))
@@ -413,5 +413,5 @@ class SQLTemplates(Precompute):
 
 
 # register relevant data structer classes
-ds_klasses = [GBDataStruct, SQLTemplates]
+ds_klasses = [GBDataStruct, SQLTemplates, ProgressiveDataStruct]
 

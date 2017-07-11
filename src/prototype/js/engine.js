@@ -64,6 +64,7 @@ var Engine = (function(EventEmitter) {
   //
   Engine.prototype.registerQuery = function(q, cb) {
 
+    console.log("query", q);
     // 1. see if the data structures can immediately answer the query
     for (var dsid in this.datastructs) {
       var ds = this.datastructs[dsid];
@@ -85,6 +86,7 @@ var Engine = (function(EventEmitter) {
     for (var dsid in this.datastructs) {
       var ds = this.datastructs[dsid];
       // is this data structure appropriate?
+      console.log("ds", ds);
       if (ds.canAnswer(q))   
         ds.register(q, cb2);
     }

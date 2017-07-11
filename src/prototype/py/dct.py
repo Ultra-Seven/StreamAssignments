@@ -152,7 +152,7 @@ class DCT:
         N = len(encode)
         M = len (self.quantization)
         for index in xrange(0, N):
-            encode[index] = math.floor(encode[index] / self.quantization[index % M])
+            encode[index] = int(encode[index] / self.quantization[index % M])
 
     def deQuantize(self, encode):
         N = len(encode)
